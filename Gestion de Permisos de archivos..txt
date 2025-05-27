@@ -1,0 +1,56 @@
+Gestion de Permisos de archivos.
+
+1. Crear la carpeta llamada materia
+
+mkdir
+
+2. Crear el archivo estudiante.txt dentro de materia
+
+touch materia/estudiante.txt
+
+3. Editar estudiante.txt usando vi
+vi estudiante.txt
+
+Dentro de vi, sigue estos pasos:
+
+Presioan i para entrar en modo de inserción.
+
+Escribir nombre y matricula
+
+Presiona Esc para salir del modo de inserción.
+Guarda y sal de vi escribiendo  
+
+shift :
+wq!
+
+4. Modificar los permisos para quesolo el usuario propietario tenga control total
+
+chmod 700 materia/estudiante.txt
+
+7 (rwx) quiere decir que el propietario tiene todos los permisos (lectura, escritura, ejecución).
+0 Grupos y otros no tienen permisos.
+
+ls -l para verificar
+
+5. Modificar los permisos para que solo el grupo propietario tenga el control total.
+
+chmd 070 materia/estudiante.txt
+
+0 Quiere decir que el propietario esta sin permisos
+
+7 (rwx) Grupo con todos los permisos
+
+0 otros sin permisos.
+
+6. Crear la carpeta materia2
+
+mkdir materia2
+
+
+7. Copiar estudiante.txt materia2/
+
+sudo cp materia/estudiante.txt materia2/
+
+8. Eliminar la carpeta materia junto con estudiante.txt
+
+rm -rf materia
