@@ -1,0 +1,44 @@
+Gestión de usuario  grupos
+
+sudo su
+
+adduser nombre_usuario
+
+//confirmar si el usuario se agrego correctamente
+
+cat /etc/passwd
+
+//agregar usuario al grupo sudo
+
+usermod -aG sudo nombre_usuario
+
+//confirmar que el usuario que acabamos de crear esta en el grupo sudoers
+
+id
+
+Cree un grupo llamado guest, cree un usuario y agréguelo al grupo creado anteriormente:
+
+//todo en modo root
+
+addgroup nombre_grupo
+
+//agregar usuario al grupo creado 
+
+gpasswd -a nombre_usuario nombre_grupo
+
+//Confirmar que el usuario fue agregado exitosamente
+
+sudo nombre_usuario
+id
+
+//Elimine el usuario y el grupo previamente creado
+
+userdel -f nombre_usuario
+
+groupdel -f nombre_grupo
+
+//Confirmar que se borro exitosamente
+
+cat /etc/passwd
+
+cat /etc/passwd | grep -isu
