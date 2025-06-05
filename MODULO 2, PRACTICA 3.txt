@@ -1,0 +1,55 @@
+
+Inicia Debian y verifica el nuevo disco 
+lsblk
+
+Deberías ver algo como /dev/sdb (tu nuevo disco, sin particiones).
+
+
+
+Crear partición y formatearla como EXT4.
+
+sudo fdisk /dev/sde
+
+Dentro de fdisk, haz lo siguiente:
+
+Presiona n → para nueva partición
+
+Presiona p → primaria
+
+Presiona 1 → número de partición
+
+Presiona Enter para aceptar el tamaño por defecto
+
+Luego presiona w → para escribir y salir
+
+Ahora crea el sistema de archivos EXT4:
+
+sudo mkfs.ext4 /dev/sdb1
+
+Crear carpeta en el Escritorio y montar la unidad allí.
+
+mkdir -p ~/Escritorio/Disco20GB
+sudo mount /dev/sdb1   /home/kevinsanchez/Escritorio/ITLA
+
+df -h
+
+Crear archivo AdrianAlcantara.txt dentro del disco montado.
+
+cd ~/Escritorio/Disco20GB
+tocuh AdrianAlcantara
+
+ls para verificar
+
+Desmontar y volver a montar en /mnt.
+
+cd 
+sudo umount /home/kevinsanchez/Escritorio/ITLA
+sudo mount /dev/sdd /mnt
+
+Verificar que el archivo aún existe.
+
+cd /mnt
+ls
+cat AdrianAlcantara.txt
+
+
