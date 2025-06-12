@@ -1,0 +1,20 @@
+sudo nano /etc/default/grub
+
+Para que todos los cambios se guarden:
+
+
+
+sudo update-grub
+sudo reboot
+
+
+Reemplaza quiet splash con rw init=/bin/bash
+Esto indica que el sistema arrancará en modo de solo consola con acceso root.
+
+mount -o remount,rw /
+
+passwd root 
+
+exec /sbin/init
+
+
