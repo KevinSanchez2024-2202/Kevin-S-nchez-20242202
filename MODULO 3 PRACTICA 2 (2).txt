@@ -1,0 +1,66 @@
+nano home.sh
+
+
+
+#!/bin/bash
+
+
+#Obtener la fecha y hora actual en el formato dd-mm-yyyy:hh:mm
+
+fecha_actual=$(date +"%d-%m-%Y:H:%M")
+
+#Defiinir la carpeta de origen y el nombre del archivo de backup
+
+caperta_origen="/home/$(whoami)"
+archivo_backup="/home/$(whoami)/backup_${fecha_actual}.tar.gz"
+
+#Crear el backup comprimido con TAR
+tar -czvf "$archivo_backup" "$carpeta_origen"
+
+#Verificar si el backup se creo correctamente
+
+if [$? -eq 0 ]; then
+    echo "Backup creado exitosamente en: $archivo_backup
+fi
+
+
+chmod +x backup_home.sh
+
+./home.sh
+
+nano backup_home.sh
+
+
+
+
+
+#!/bin/bash
+
+#Preguntar al usuario por el nombre del archivo
+
+read -p "Que nombre deseas ponerle al archivo?" nombre_archivo
+
+#Definir la ruta del archivo en el escritorio
+ruta_archivo="/home/$(whoami)/Desktop/${nombre_archivo}.txt"
+
+# Ejecutar el comando ip add y redigirir la salida al archivo
+
+ip add > "$ruta_archivo"
+
+# Verificar si el archivo se creo correctamente
+
+if [ $? -eq 0 ]; then
+    echo "El archivo se ha creado exitosamente en: $ruta_archivo"
+
+else
+   echo "Hubo un error al crear el archivo"
+fi
+
+
+chmod +x backup_home.sh
+
+./backup_home.sh
+
+
+
+
