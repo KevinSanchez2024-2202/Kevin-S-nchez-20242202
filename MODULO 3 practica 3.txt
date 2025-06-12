@@ -1,0 +1,12 @@
+ssh-keygen
+  
+touch authorized_keys
+
+nano authorized_keys
+
+chmod 600 ~/.ssh/authorized_keys
+
+LLAVE:
+
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEwhp9FPI5Y+uA++2VJGAcTByKhpJ4lRaegWQFz2iYoA msi@DESKTOP-O5MHBMJ
+
