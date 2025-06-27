@@ -1,0 +1,31 @@
+sudo dpkg-reconfigure postfix
+
+sudo apt install mailutils -y
+
+
+$myhostname, localhost.$mydomain, localhost
+
+sudo nano /etc/postfix/main.cf
+
+sudo nano /etc/postfix/sasl/sasl_passwd
+
+sudo postmap /etc/postfix/sasl/sasl_passwd
+
+sudo chmod 600 /etc/postfix/sasl/sasl_passwd
+
+sudo chmod 600 /etc/postfix/sasl/sasl_passwd.db
+
+sudo nano /etc/postfix//main.cf
+
+smtp_use_tls = yes
+smtp_tls_note_starttls_offer = yes
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps =
+hash:/etc/postfix/sasl/sasl_passwd
+smtp_sasl_security_options = noanonymous
+smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
+
+[smtp.gmail.com]:587 kevin.sanchez.inpha@gmail.com: ofqm pifp hkfn nhfa
+
+echo "Kevin Sánchez\nMatricula: xxxxxxx" | mail -s "MambruSeFueALaGuerra" 20242202@itla.edu.do
+

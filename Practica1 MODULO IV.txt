@@ -1,0 +1,99 @@
+ Practica1
+2. Crear un sitio web estatico con "Hola mundo"
+Crea el directorio del sitio:
+
+sudo mkdir -p /var/www/html/hola_mundo
+
+echo '<!DOCTYPE html>
+<html>
+<head><title>Hola Mundo</title></head>
+<body><h1>Hola mundo</h1></body>
+</html>'| sudo tee /var/www/html/hola_mundo/index.html
+
+3. Configurar el host virtual en el puerto 80
+Crea un archivo de configuración:
+
+sudo nano /etc/apache2/sites-available/hola_mundo.conf
+
+<virtualHost *:80>
+    ServerAdmin webmaster@localhost DocumentRoot /var/www/html/hola_mundo ServerName hola_mundo.local
+
+<Directory /var/www/HTML/hola_mundo> AllowOverride All Require all granted </Directory>
+
+ErrorLog ${APACHE_LOG_DIR}/acces.log 
+ CustomLog ${APACHE_LOG_DIR}/access.log combined
+ </VirtualHost>
+
+Habilita el sitio y reinicia Apache:
+
+sudo a2ensite hola_mundo.conf
+sudo systemctl restart apache2
+
+Para acceder al sitio, agrega la siguiente linea al archivo hosts:
+
+sudo nano /etc/hosts
+
+127.0.0.1 hola_mundo.local 
+
+4. Crear otro sitio con tu nombre, matricula y materia
+Crea el directorio del sitio:
+
+sudo mkdir -p /var/www/html/datos_personales
+
+echo '<!DOCTYPE html>
+<html>
+<head><title>Datos Personales</title></head>
+<body>
+     <h1>Kevin Sanchez</h1>
+     <h2>Matricula: 2024-1209</h2>
+     <h3>Materia: Sistema Operativos 3</h3>
+</body>
+</html>' | sudo tee /var/www/HTML/datos_personales/index.html
+
+5. Configurar el host virtual en el puerto 8080
+Crea un nuevo archivo de configuración:
+
+sudo nano /etc/apache2/sites-available/datos_personales.conf
+
+<VirtualHost *:8080>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/html/datos_personales
+ServerName datos_personales.local
+
+<Directory /var/www/html/datos_personales>
+     AlloWOverride All
+     Require all granted
+</Directory>
+
+ErrorLog ${APACHE_LOG_DIR}/Access.log combined
+</virtualHost>
+
+sudo a2ensite datos_personales.conf
+sudo systemctl restart apache2
+
+Habilita el puerto 8080 en Apache:
+
+sudo nano /etc/apache2/ports.conf
+
+Listen 8080
+
+
+
+sudo nano /etc/hosts
+
+Y añade:
+
+127.0.0.1 datos_personales.local
+
+6. Verifica que todo funcione
+Ejecuta:
+
+sudo apachectl configtest
+
+sudo a2dissite 000-default.conf
+
+sudo systemctl restart apache2 
+
+
+
+
