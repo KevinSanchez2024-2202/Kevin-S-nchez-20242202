@@ -1,0 +1,56 @@
+Practica 1: Syncronizacion de carpetas con Rsync.
+
+sudo apt update
+sudo apt install rsync openssh-server -y
+
+Servidor Primario (Server 1)
+
+ssh-keygen
+ssh-copy-id kevin20242202@10.0.0.114
+
+sudo apt install rsync -y
+
+1. Crear carpeta y generar 100 archivos
+
+cd Desktop
+mkdir pedrito
+cd pedrito
+touch kevin{1..100}.txt
+ls
+
+
+rsync -avz /home/kevin20242202/Desktop/pedrito/ kevin20242202@10.0.0.114:/home/kevin20242202/Desktop
+
+sudo nano kevin.txt
+
+rsync -avz /home/kevin20242202/Desktop/ kevin20242202@10.0.0.114:/home/kevin20242202/Desktop
+
+sudo nano /prueba_rsync.sh
+
+rsync -avz /home/kevin20242202/Desktop/ kevin20242202@10.0.0.114:/home/kevin20242202/Desktop
+
+sudo chmod +x /prueba_rsync.sh
+
+
+
+2. Crear una tarea en crontab.
+
+crontab -e
+
+Agrega esta línea para que se ejecute cada 1 minuto:
+
+* * * * * /bin/bash ~/prueba_rsync.sh
+
+
+
+3. Probar la sincronización.
+
+Crea un nuevo archivo:
+
+Espera 1 minuto ⏳
+
+Verifica en el servidor secundario si se copió:
+
+ls
+
+

@@ -1,0 +1,76 @@
+Practica 2: Instalacion y configuracion del Cluster.
+
+sudo apt update
+sudo apt install heartbeat -y
+
+
+ PASO 2: Configurar archivos de Heartbeat
+1. Editar /etc/ha.d/ha.cf
+
+sudo nano /etc/ha.d/ha.cf
+
+Contenido:
+
+logfile /var/log/ha-log
+logfacility local0
+keepalive 2
+deadtime 10
+initdead 20
+udpport 694
+bcast enp0s3     # reemplaza con tu interfaz de red
+auto_failback on
+node node1
+node node2
+
+
+Copia el mismo archivo al segundo nodo (scp o manualmente).
+
+Crear archivo /etc/ha.d/haresources en ambos nodos
+
+sudo nano /etc/ha.d/haresources
+ 
+Contenido:
+
+node1 IPaddr::192.168.1.150/24/enp0s3
+
+Crear archivo de autenticación /etc/ha.d/authkeys
+
+Contenido:
+
+auth 1
+1 crc
+
+Establecer permisos adecuados:
+
+sudo chmod 600 /etc/ha.d/authkeys
+
+Copia este archivo también al otro nodo.
+
+niciar Heartbeat en ambos nodos
+
+sudo systemctl enable heartbeat
+sudo systemctl start heartbeat
+
+Verificar IP flotante
+
+Haz ping desde una tercera máquina o desde uno de los nodos:
+
+ping 192.168.1.150
+
+PRUEBAS DE FAILOVER
+
+sudo systemctl stop heartbeat
+
+La IP flotante debe pasar a node2.
+
+ Vuelve a arrancar Heartbeat en node1:
+
+sudo systemctl start heartbeat
+
+La IP flotante vuelve a node1 si tienes activado auto_failback.
+
+ip a | grep 192.168.1.150
+
+
+
+

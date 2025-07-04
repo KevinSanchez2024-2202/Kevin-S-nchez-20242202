@@ -1,0 +1,110 @@
+Practica 3: Cluster de Alta Disponibilidad HTTP.
+
+Paso 1: Preparar los servidores
+Supongamos que tienes dos servidores con IPs:
+
+Server1: 192.168.1.101
+
+Server2: 192.168.1.102
+
+Y quieres que el IP virtual (VIP) sea 192.168.1.200, que será la IP accesible desde el navegador.
+
+Paso 2: Instalar Apache y KeepAlived en ambos servidores
+En ambos servidores:
+
+
+sudo apt update
+sudo 
+Paso 3: Crear páginas web diferenciadas
+En Server1:
+
+echo "<html><body><h1>Servidor 1,Master</h1></body></html>" | sudo tee /var/www/html/index.html
+
+sudo systemctl restart apache2
+
+En Server2:
+
+echo "<html><body><h1>Servidor 2, BACKUP</h1></body></html>" | sudo tee /var/www/html/index.html
+sudo systemctl restart apache2
+
+Paso 4: Configurar KeepAlived
+En Server1 (Master)
+Edita el archivo /etc/keepalived/keepalived.conf:
+
+
+sudo nano /etc/keepalived/keepalived.conf
+
+
+Pega esta configuración:
+
+vrrp_instance VI_1 {
+    state MASTER
+    interface eth0                       # Cambia eth0 por el nombre de tu interfaz de red si es otro
+    virtual_router_id 51
+    priority 100
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass 1234
+    }
+    virtual_ipaddress {
+        192.168.1.200
+    }
+    track_script {
+        chk_http
+    }
+}
+
+vrrp_script chk_http {
+    script "pidof apache2"
+    interval 2
+    weight 2
+}
+
+
+En Server2 (Backup)
+Edita el archivo /etc/keepalived/keepalived.conf:
+
+sudo nano /etc/keepalived/keepalived.conf
+
+Pega esta configuración (igual que el Master pero con prioridad menor y estado BACKUP):
+
+vrrp_instance VI_1 {
+    state BACKUP
+    interface eth0
+    virtual_router_id 51
+    priority 90
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass 1234
+    }
+    virtual_ipaddress {
+        192.168.1.200
+    }
+    track_script {
+        chk_http
+    }
+}
+
+vrrp_script chk_http {
+    script "pidof apache2"
+    interval 2
+    weight 2
+}
+
+
+Paso 5: Reiniciar KeepAlived y habilitarlo
+En ambos servidores:
+
+sudo systemctl enable keepalived
+sudo systemctl restart keepalived
+
+Paso 6: Probar el cluster
+Desde cualquier máquina en la red, abre el navegador e ingresa a http://192.168.1.200
+
+Deberías ver la página del Servidor 1 (porque es el Master).
+
+Ahora, en Server1, apaga Apache o el servidor:
+
+
