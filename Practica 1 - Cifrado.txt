@@ -1,0 +1,15 @@
+Crear un directorio y un archivo
+
+mkdir /cifrado_gpg
+cd /cifrado_gpg
+echo "Este es un archivo secreto" > secreto.txt
+
+sudo gpg2 --symmetric secreto.txt
+
+gpg2 -d secreto.txt.gpg > practica.txt
+
+
+
+
+
+
