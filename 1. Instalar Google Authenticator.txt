@@ -1,0 +1,38 @@
+ 1. Instalar Google Authenticator en la VM:
+
+sudo apt update
+sudo apt install libpam-google-authenticator -y
+
+
+
+ 2. Configurar Google Authenticator para el usuario
+
+google-authenticator
+
+
+3. Configurar PAM para usar Google Authenticator
+
+Edita el archivo PAM de SSH:
+
+sudo nano /etc/pam.d/sshd
+
+Agrega esta línea al final del archivo:
+
+auth required pam_google_authenticator.so
+
+4. Configurar el servidor SSH para requerir 2FA
+
+sudo nano /etc/ssh/sshd_config
+
+
+ChallengeResponseAuthentication yes
+UsePAM yes
+PasswordAuthentication yes
+
+
+sudo systemctl restart ssh
+
+
+ 5. Realizar la conexión desde tu máquina host
+
+
