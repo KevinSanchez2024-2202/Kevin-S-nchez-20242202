@@ -1,0 +1,53 @@
+1️⃣ Instalar Samba y habilitar el servicio
+
+sudo apt update
+sudo apt install samba -y
+sudo systemctl enable --now smbd
+
+
+2️⃣ Crear carpeta compartida
+
+sudo mkdir -p /srv/samba/compartida
+sudo chmod 777 /srv/samba/compartida
+
+
+3️⃣ Crear usuario Samba
+
+sudo useradd adrian
+sudo smbpasswd -a adrian
+
+
+4️⃣ Configurar Samba
+
+sudo nano /etc/samba/smb.conf
+
+
+[COMPARTIDA]
+path = /srv/samba/compartida
+read only = no
+guest ok = no
+
+sudo systemctl restart smbd
+
+
+5️⃣ Crear los 100 archivos
+
+cd /srv/samba/compartida
+for i in {1..100}; do
+  touch adrian$i
+done
+
+6️⃣ Desde Windows
+Abrir Explorador de Archivos
+
+En la barra de dirección escribe:
+
+\\IP_DE_LINUX\COMPARTIDA
+
+
+Escribe usuario: adrian
+
+Escribe la contraseña que creaste.
+
+
+
