@@ -1,0 +1,100 @@
+Paso Previo: Crear un Snapshot de la VM
+Antes de iniciar, crea un snapshot desde tu plataforma de virtualización (VirtualBox, VMware, etc.):
+
+VirtualBox:
+
+Apaga la VM.
+
+Ve a la interfaz de VirtualBox.
+
+Selecciona la VM → pestaña “Snapshots”.
+
+Haz clic en “Take”, nómbralo por ejemplo: Antes de NFS.
+
+1. Instalar el servidor NFS:
+
+sudo apt update
+sudo apt install nfs-kernel-server -y
+
+2. Crear el directorio OS3 y los archivos:
+
+sudo mkdir /srv/OS3
+cd /srv/OS3
+for i in {1..100}; do touch "Adrian${i}.txt"; done
+
+3. Asignar permisos:
+
+Permitir que otros usuarios lean y escriban (puedes ajustar esto según la necesidad):
+
+sudo chmod -R 755 /srv/OS3
+sudo chown -R nobody:nogroup /srv/OS3
+
+4. Configurar /etc/exports
+Editar el archivo de configuración:
+
+sudo nano /etc/exports
+
+Agregar la siguiente línea (reemplaza 192.168.56.0/24 por la red de tu cliente):
+
+/srv/OS3 10.0.0.68/24(rw,sync,no_subtree_check)
+
+5. Aplicar configuración y reiniciar NFS:
+
+sudo exportfs -a
+sudo systemctl restart nfs-kernel-server
+
+Verifica:
+
+sudo exportfs -v
+
+Cliente NFS
+1. Instalar el cliente NFS
+
+sudo apt update
+sudo apt install nfs-common -y
+
+2. Crear punto de montaje
+
+sudo mkdir -p /mnt/OS3
+
+3. Montar manualmente
+
+sudo mount <10.0.0.68>:/srv/OS3 /mnt/OS3
+
+Verifica:
+
+ls /mnt/OS3
+
+ Montaje Automático con /etc/fstab
+
+Obtener la IP del servidor:
+
+ip a
+
+
+Editar /etc/fstab en el cliente:
+
+sudo nano /etc/fstab
+
+Agregar esta línea al final (ajusta la IP):
+
+<10.0.0.67:/srv/OS3 /mnt/OS3 nfs defaults 0 0
+
+Prueba de Funcionamiento
+Verifica que esté montado:
+
+Prueba de Funcionamiento
+Verifica que esté montado:
+
+Reinicia la VM cliente:
+
+sudo reboot
+
+Después del reinicio, verifica:
+
+ls /mnt/OS3
+# Debes ver nuevamente los 100 archivos
+
+
+
+
