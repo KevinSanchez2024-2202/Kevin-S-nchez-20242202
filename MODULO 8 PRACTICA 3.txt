@@ -1,0 +1,73 @@
+✅ Paso 1: Instalación de Docker Compose
+
+sudo apt update
+sudo apt install docker-compose -y
+
+Verifica que está instalado correctamente:
+
+docker-compose --version
+
+✅ Paso 2: Crear archivo docker-compose.yml
+
+Crea un directorio para el proyecto y entra en él:
+
+mkdir wordpress-compose
+cd wordpress-compose
+
+Ahora crea el archivo docker-compose.yml:
+
+nano docker-compose.yml
+
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: wordpress-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wp_user
+      MYSQL_PASSWORD: wp_password
+      MYSQL_ROOT_PASSWORD: root_password
+    volumes:
+      - db_data:/var/lib/mysql
+
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress-app
+    depends_on:
+      - db
+    ports:
+      - "8080:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: wp_password
+    volumes:
+      - wordpress_data:/var/www/html
+
+volumes:
+  db_data:
+  wordpress_data:
+
+
+✅ Paso 3: Despliegue de los contenedores
+
+docker-compose up -d
+
+
+Esto descargará las imágenes, creará los contenedores y los pondrá en ejecución en segundo plano.
+
+Puedes verificar que están corriendo:
+
+docker ps
+
+
+✅ Paso 4: Acceder a WordPress desde el navegador
+
+http://localhost:8080
+
+X1FcLxwGHOhlpsslge
