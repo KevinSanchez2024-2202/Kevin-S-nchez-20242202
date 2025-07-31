@@ -1,0 +1,60 @@
+✅ 1. Descargar la imagen de Portainer desde Docker Hub
+Usaremos Portainer CE (Community Edition), la versión gratuita de administración Docker.
+
+docker pull portainer/portainer-ce
+
+✅ 2. Crear el contenedor de Portainer
+
+Crea el volumen para que los datos persistan y luego el contenedor, mapeando los puertos:
+
+docker volume create portainer_data
+
+docker run -d -p 8000:8000 -p 9443:9443 \
+  --name portainer \
+  --restart=always \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v portainer_data:/data \
+  portainer/portainer-ce
+
+🔐 Puertos:
+
+9443: Interfaz web HTTPS
+
+8000: Acceso a la API Edge
+
+✅ 3. Acceder a la interfaz de administración
+
+Abre tu navegador y accede a:
+
+https://127.0.0.1:9443
+
+⚠️ Si usas http:// en lugar de https://, no cargará correctamente.
+
+Acepta el certificado autofirmado si tu navegador lo bloquea por seguridad.
+
+✅ 4. Crear cuenta de administrador
+En el primer inicio:
+
+Crea un usuario administrador (admin)
+
+Elige Docker local como tipo de entorno (se conecta automáticamente al Docker Engine del host)
+
+✅ 5. Detener el contenedor de NGINX desde Portainer
+Una vez dentro del panel:
+
+Ve a Containers.
+
+Busca el contenedor nginx_web.
+
+Haz clic en el botón Stop.
+
+Esto detendrá el servidor web que creaste en la práctica anterior.
+
+✅ 6. Comprobar en el navegador
+
+Intenta visitar de nuevo:
+
+http://127.0.0.1:8888
+
+🔍 Resultado: Deberías ver un error como "Unable to connect" o "Connection refused", ya que el contenedor de NGINX fue detenido correctamente desde Portainer.
+
