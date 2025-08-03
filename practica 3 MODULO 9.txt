@@ -1,0 +1,94 @@
+practica 3 MODULO 9
+
+sudo mkdir -p /etc/ansible
+cd /etc/ansible
+sudo nano ansible.cfg
+
+[defauts]
+inventory = /etc/ansible/hosts
+private_key_file = /home/kevin1234/.ssh/id_rsa
+host_key_checking = false
+ask become pass = True
+
+[ssh_connection]
+ssh_args = -o ForwardAgent=yes -o ControlMaster=auto -o ControlPersist=60s
+
+Ahora vamos con el inventario.
+
+
+sudo nano hosts
+
+[win]
+10.0.0.115
+[win:vars]
+ansible_user=ansible
+ansible_password=1234
+ansible_port=5985
+ansible_connection=winrm
+ansible_winrm_transport=basic
+ansible_winrm_server_cert_validation=ignore
+
+[linux]
+134.122.25.228
+
+[linux:vars]
+ansible_user=ansible
+ansible_ssh_private_key_file= ~/ssh/id_rsa
+ansible_become_password=1234
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+
+
+
+Crear la llave ssh:
+
+ssh-keygen -t rsa -b 4098      
+
+
+
+En DigitalOcean:
+
+Aqui vamos a crear el usuario ansible dándole permisos de root y crear el directorio, ssh etc.
+
+
+sudo useradd -m ansible 
+sudo usermod -aG sudo ansible
+sudo chsh -s /bin/bash ansible
+
+Directorio:
+
+sudo mkdir -p /home/ansible/.ssh
+sudo touch /home/ansible/.ssh/authorized_keys
+sudo chmod 600 /home/ansible/.ssh/authorized_keys
+sudo chown ansible:ansible /home/ansible/.ssh/authorized_keys 
+
+Editar Archivo:
+
+sudo nano /home/ansible/.ssh/authorized_keys
+
+Copiar y pegar llave.
+
+En nuetro VMware:
+
+ssh ansible@134.122.25.228
+
+cd /
+ls
+whoami
+
+Prueba de ping:
+
+ansible linux -m ping -u ansible
+
+Windows:
+
+Windows + R
+
+wf.msc
+
+Regla de entrada,,,,,,,,, Administración Remota de registro de eventos,,,,,,habilitar regla 
+
+PowerShell como administrador:
+
+
