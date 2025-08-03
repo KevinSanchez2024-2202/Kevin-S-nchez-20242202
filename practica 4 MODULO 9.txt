@@ -1,0 +1,16 @@
+practica 4 MODULO 9
+
+Hacer prueba.
+
+ansible win -m win_ping
+
+ansible win -i /etc/ansible/hosts -m win_shell -a "Move-Item -Path 'C:/Users/ansible/Desktop/prueba-adhoc.txt' -Destination 'C:/Users/ansible/Documents/'"
+
+DigitalOcean:
+
+
+ansible ALL=(ALL) NOPASSWD: ALL
+
+EN VMware:
+
+ansible linux -i /etc/ansible/hosts -m reboot --become
