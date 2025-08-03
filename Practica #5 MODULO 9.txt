@@ -1,0 +1,59 @@
+Practica #5 MODULO 9
+
+Hacer prueba.
+
+
+ansible win -m win_ping
+
+ansible linux -m ping -u ansible
+
+
+ Instalar Notepad++ en Ansible2 (Windows)
+
+ Archivo: sudo nano install_notepad.yml
+
+---
+- name: Instalar Notepad++ en Windows (ansible2)
+  hosts: win
+  tasks:
+    - name: Descargar instalador de Notepad++
+      win_get_url:
+        url: "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.6.5/npp.8.6.5.Installer.x64.exe"
+        dest: "C:\\Users\\ansible\\Downloads\\notepad_installer.exe"
+
+    - name: Instalar Notepad++
+      win_package:
+        path: "C:\\Users\\ansible\\Downloads\\notepad_installer.exe"
+        arguments: /S
+        product_id: Notepad++
+        state: present
+
+
+
+ansible-playbook install_notepad.yml
+
+
+ Instalar NGINX e iniciar servicio en Ansible1 (Linux)
+
+Archivo: sudo nano  install_nginx.yml
+
+---
+- name: Instalar NGINX en Linux
+  hosts: linux
+  become: true
+  tasks:
+    - name: Instalar NGINX
+      apt:
+        name: nginx
+        state: present
+        update_cache: true
+
+    - name: Asegurar que NGINX esté iniciado y habilitado
+      service:
+        name: nginx
+        state: started
+        enabled: true
+
+ansible-playbook install_nginx.yml
+
+
