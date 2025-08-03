@@ -1,0 +1,79 @@
+ practica 2 MODULO 9
+1. Instalación de Terraform en la VM Server (Ansible Controller).
+
+wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update && sudo apt install terraform
+
+2. Crear estructura del proyecto Terraform
+
+mkdir terraform-do && cd terraform-do
+
+ssh-keygen
+
+
+
+3. Crear archivos de Terraform
+
+sudo nano main.tf
+
+terraform {
+  required_providers {
+    digitalocean = {
+      source  = "digitalocean/digitalocean"
+      version = "~> 2.0"
+    }
+  }
+}
+
+
+provider "digitalocean" {
+  token = "TU_API_TOKEN"
+}
+
+
+resource "digitalocean_droplet" "OS3vm" {
+  image  = "ubuntu-22-04-x64"
+  name   = "OS3vm"
+  region = "nyc1"
+  size   = "s-1vcpu-1gb"
+  ssh_keys = [var.ssh_fingerprint]
+}
+
+variable "ssh_fingerprint"{
+default = "TU_LLAVE_PUBLICA_FINGERPRINT"
+}
+
+out "vm_ip"{
+ value = digitalocean_droplet.OS3vm.ipv4_address
+} 
+
+
+4. Desplegar la VM con Terraform
+
+terraform init
+terraform validate
+terraform apply
+
+ssh root@ipdigitalocean
+
+5. Validar despliegue
+
+Acceder por SSH:
+
+ssh root@<IP_PUBLICA>
+
+
+
+
+
+
+token API:
+dop_v1_c9fc82efb3535d87ab0c2cf91541a7e207ca8347b4c1ee664ca68ae4c7e09f58
+
+
+ssh-keygen llave publica: /home/kevin1234/.ssh/id_rsa.pub
+
+
+Fingerprint: 7c:a4:25:a9:db:24:32:10:40:79:54:c1:55:07:8f:fa
+
