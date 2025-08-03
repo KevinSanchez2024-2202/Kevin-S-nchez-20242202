@@ -1,0 +1,83 @@
+practia 1 MODULO 9
+ Parte 1: Instalación de Webmin en Ansible Client01 (Linux)
+Paso 1: Actualiza el sistema
+
+sudo apt update && sudo apt upgrade -y
+
+Paso 2: Instalar dependencias
+
+sudo apt install -y software-properties-common apt-transport-https wget
+
+Paso 3: Agregar repositorio de Webmin
+
+wget -q http://www.webmin.com/jcameron-key.asc -O- | sudo apt-key add -
+sudo add-apt-repository "deb http://download.webmin.com/download/repository sarge contrib"
+
+Paso 4: Instalar Webmin
+
+sudo apt update
+
+
+sudo apt install -y webmin
+
+Paso 5: Acceder a Webmin
+Navega a: https://<IP_del_Cliente_Linux>:10000
+
+Usuario: el mismo que tu usuario del sistema (por ejemplo, root o el tuyo con sudo).
+
+Acepta el certificado autofirmado si el navegador te da advertencia.
+
+ Parte 2: Opciones de Administración vía Webmin
+
+1. Administración de usuarios
+Menú: System > Users and Groups
+
+Crear usuario → “Create a new user”
+
+Eliminar usuario → selecciona uno y haz clic en "Delete"
+
+2. Gestión de servicios
+Menú: System > Bootup and Shutdown
+
+Puedes iniciar, detener y reiniciar servicios (ejemplo: ssh, apache2, etc.)
+
+3. Configuración de red
+Menú: Networking > Network Configuration > Network Interfaces
+
+Puedes configurar una IP estática editando la interfaz activa (eth0, ens3, etc.)
+
+4. Administración de software
+Menú: System > Software Packages
+
+Instalar: especifica nombre del paquete (ej: htop)
+
+Eliminar: busca el paquete instalado y remuévelo
+
+Actualizar: usa la opción "Package Updates"
+
+
+5. Gestión de archivos y directorios
+Menú: Others > File Manager
+
+Acciones posibles:
+
+Explorar directorios
+
+Editar archivo: clic derecho > “Edit”
+
+Eliminar archivo: clic derecho > “Delete”
+
+
+6. Monitorización del sistema
+Menú: System > System Information
+
+Muestra:
+
+CPU Load
+
+Memory Usage
+
+Disk usage
+
+También puedes ir a: System > Running Processes y System > Disk and Network Filesystems para más detalle
+
