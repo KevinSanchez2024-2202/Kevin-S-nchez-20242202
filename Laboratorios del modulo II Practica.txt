@@ -1,0 +1,36 @@
+Laboratorios del modulo II Practica 1.
+
+1. Actualizar los repositorios y paquetes del sistema.
+
+sudo apt update && sudo apt upgrade -y
+
+2. Listar los repositorios actualmente en uso.
+
+grep '^deb ' /etc/apt/sources.list/etc/apt/sources.list.d/*.list
+
+3. Buscar la herramienta bashtop en la caché de los repositorios.
+
+apt search bashtop
+
+4. Instalar Bashtop Resource Monitor.
+
+git clone
+https:--GitHub.com/aristocratos/bashtop.git
+
+cd bashtop/
+
+cd DEB
+
+sudo ./build
+
+5. Presentar Bashtop en pantalla
+
+bashtop
+
+6. Desinstalar Bashtop y eliminar archivos de configuración.
+
+sudo apt purge bashtop -y
+
+7. Eliminar dependencias no utilizadas.
+
+sudo apt autoremove -y 
